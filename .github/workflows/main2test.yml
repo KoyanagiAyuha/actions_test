@@ -20,7 +20,12 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git fetch origin main
-          git merge origin/main --no-edit || echo "Merge conflict occurred" && exit 1
+          git merge origin/main --no-edit
+          if git diff --check; then
+            echo "No merge conflict"
+          else
+            echo "Merge conflict occurred" && exit 1
+          fi
 
       - name: Push changes
         uses: ad-m/github-push-action@master
